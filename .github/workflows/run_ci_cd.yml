@@ -1,0 +1,25 @@
+---
+#this action installs python 3.10 on pull requests
+name: python3.10 installer
+
+on:
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+
+
