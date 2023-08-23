@@ -8,4 +8,6 @@ install_dependencies:
 run_precommit:
 	pre-commit run --all-files
 
+run_tests:
+	py.test tests/
 
