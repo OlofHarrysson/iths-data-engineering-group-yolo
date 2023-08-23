@@ -25,10 +25,11 @@ def save_metadata_info(xml_text, blog_name):
         f.write(xml_text)
 
 
-def main(blog_name):
+def main(blog_name, save_data=True):
     print(f"Processing {blog_name}")
     xml_text = get_metadata_info(blog_name)
-    save_metadata_info(xml_text, blog_name)
+    if save_data == True:
+        save_metadata_info(xml_text, blog_name)
     print(f"Done processing {blog_name}")
 
 
