@@ -1,0 +1,37 @@
+---
+#this action installs python 3.10 on pull requests
+name: python3.10 installer
+
+#this action runs on pull requests
+on:
+  pull_request:
+    branches:
+    - main
+
+    #this part tells the program what job to execute when it's run
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3 # action to checkout repository
+
+    - name: Install Python
+      uses: actions/setup-python@v4 #calls on repository with installment of python
+      with:
+        python-version: '3.10' #this version of python  is installed
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: pre-commit
+      uses: pre-commit/action@v3.0.0
+
+    - name: Run Tests
+      run: |
+        py.test tests/
+
