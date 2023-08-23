@@ -32,9 +32,15 @@ source venv/bin/activate
 
 ## Pull Request Practice
 
+<<<<<<< HEAD
 
 🐢 Tommy the Brave Turtle 🐢
 In a peaceful pond, Tommy the Turtle lived with his friends. One day, a baby duckling named Daisy got lost in the nearby forest. Tommy, being the bravest turtle, volunteered to find her. Through thick bushes and over fallen logs, Tommy searched tirelessly. Will he be able to find Daisy and bring her back safely to the pond? Follow Tommy's courageous journey and find out!
 
 🐦 Oliver the Curious Owl 🐦
 In a cozy tree hollow, Oliver the Owl lived with his family. Oliver was known for his insatiable curiosity. One moonlit night, he spotted a shiny object in the distance. Eager to find out what it was, Oliver embarked on a thrilling nighttime quest. Will his curiosity lead him to a magical discovery or get him into trouble? Fly alongside Oliver and unravel the mysteries of the night.
+=======
+🐦 Oliver the Curious Owl 🐦
+In a cozy tree hollow, Oliver the Owl lived with his family. Oliver was known for his insatiable curiosity. One moonlit night, he spotted a shiny object in the distance. Eager to find out what it was, Oliver embarked on a thrilling nighttime quest. Will his curiosity lead him to a magical discovery or get him into trouble? Fly alongside Oliver and unravel the mysteries of the night.
+
+>>>>>>> origin
