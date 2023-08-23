@@ -28,9 +28,3 @@ source venv/bin/activate
 
 ## Tips
 **Important**: All your python code should go inside of the src/newsfeed folder. This makes it so that you can "build" your own python package easily and not have problems with the PYTHONPATH i.e. not being able to import code from other files.
-
-
-## Pull Request Practice
-
-🐦 Oliver the Curious Owl 🐦
-In a cozy tree hollow, Oliver the Owl lived with his family. Oliver was known for his insatiable curiosity. One moonlit night, he spotted a shiny object in the distance. Eager to find out what it was, Oliver embarked on a thrilling nighttime quest. Will his curiosity lead him to a magical discovery or get him into trouble? Fly alongside Oliver and unravel the mysteries of the night.
