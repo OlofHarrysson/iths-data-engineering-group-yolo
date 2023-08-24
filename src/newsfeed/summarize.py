@@ -1,4 +1,5 @@
 # import modules
+import json
 import os
 
 import openai
@@ -20,12 +21,12 @@ print(OPENAI_API_KEY)
 
 
 # Define a function to summarize text using Openai's API
-def summarize_text(blog_text, token=4000):
+def summarize_text(blog_text):
     # create prompt for the api request
-    prompt = f"Summerize the following text very consise: '{blog_text}'"
+    prompt = f"Summerize the following text very short: ==={blog_text}===. Summary:"
 
     # creates a GPT-3.5 text completion request using the Openai api.
-    response = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=token)
+    response = openai.Completion.create(engine="text-davinci-003", prompt=prompt)
 
     # extract and return the genereted summary
     summary = response.choices[0].text.strip()
@@ -33,11 +34,37 @@ def summarize_text(blog_text, token=4000):
 
 
 if __name__ == "__main__":
-    ## Prompt the user to input the blog text to be summarized
-    blog_text = input("Enter the blog text that you want to summarize:\n")
+    # define the directory for articles in the data warehouse
+    articles_dir = "data/data_warehouse/mit/articles"
 
-    # call the summarize function to generate summary
-    summary = summarize_text(blog_text)
+    # define the directory for saving summaries in the data warehouse
+    summaries_dir = "data/data_warehouse/mit/summaries"
+    os.makedirs(summaries_dir, exist_ok=True)  # creates summaryies directories
 
-    # print the generated summary
-    print("\nGenerated Summary:", summary)
+    article_files = [
+        file for file in os.listdir(articles_dir) if file.endswith(".json")
+    ]  # list all article files
+
+    for article_file in article_files:
+        with open(os.path.join(articles_dir, article_file), "r") as f:
+            article_data = json.load(f)
+
+        # Get article content
+        blog_text = article_data["blog_text"]
+
+        # Generate summary
+        summary = summarize_text(blog_text)
+
+        # Get article metadata from the JSON data
+        article_title = article_data["title"]
+        unique_id = article_data["unique_id"]
+
+        # Create a BlogSummary instance
+        blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
+
+        # Save the summary to the summaries directory in the data warehouse
+        summary_filename = blog_summary.get_filename()
+        with open(os.path.join(summaries_dir, summary_filename), "w") as f:
+            json.dump(blog_summary.dict(), f, indent=4)
+
+        print(f"Summary saved for '{article_title}'")
