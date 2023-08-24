@@ -4,6 +4,8 @@ import os
 import openai
 from dotenv import load_dotenv
 
+from newsfeed.datatypes import BlogInfo, BlogSummary
+
 # load environment variable from .env file
 load_dotenv()
 
