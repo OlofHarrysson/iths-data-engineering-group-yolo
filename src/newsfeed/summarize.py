@@ -23,7 +23,7 @@ print(OPENAI_API_KEY)
 # Define a function to summarize text using Openai's API
 def summarize_text(blog_text):
     # create prompt for the api request
-    prompt = f"Summerize the following text very short: ==={blog_text}===. Summary:"
+    prompt = f"Summerize the following text : ==={blog_text}=== .summary"
 
     # creates a GPT-3.5 text completion request using the Openai api.
     response = openai.Completion.create(engine="text-davinci-003", prompt=prompt)
