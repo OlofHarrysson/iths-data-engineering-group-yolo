@@ -1,6 +1,7 @@
 # import modules
 import json
 import os
+from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
@@ -17,7 +18,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 # print open_api_key
-print(OPENAI_API_KEY)
+# print(OPENAI_API_KEY)
 
 
 # Define a function to summarize text using Openai's API
