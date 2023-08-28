@@ -1,6 +1,7 @@
 # import modules
 import json
 import os
+from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
@@ -17,54 +18,68 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 # print open_api_key
-print(OPENAI_API_KEY)
+# print(OPENAI_API_KEY)
 
 
 # Define a function to summarize text using Openai's API
 def summarize_text(blog_text):
     # create prompt for the api request
-    prompt = f"Summerize the following text : ==={blog_text}=== .summary"
+    prompt = f"Summarize the following text : {blog_text}"
 
-    # creates a GPT-3.5 text completion request using the Openai api.
-    response = openai.Completion.create(engine="text-davinci-003", prompt=prompt)
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": prompt},
+        ],
+    )
 
     # extract and return the genereted summary
-    summary = response.choices[0].text.strip()
+    summary = response.choices[0].message["content"].strip()
     return summary
 
 
-if __name__ == "__main__":
-    # define the directory for articles in the data warehouse
-    articles_dir = "data/data_warehouse/mit/articles"
+def load_articles(blog_name):
+    articles_path = Path("data/data_warehouse") / blog_name / "articles"
 
-    # define the directory for saving summaries in the data warehouse
-    summaries_dir = "data/data_warehouse/mit/summaries"
-    os.makedirs(summaries_dir, exist_ok=True)  # creates summaryies directories
+    article_files = [file for file in os.listdir(articles_path) if file.endswith(".json")]
 
-    article_files = [
-        file for file in os.listdir(articles_dir) if file.endswith(".json")
-    ]  # list all article files
+    return article_files
+
+
+def extract_summaries_from_articles(article_files, blog_name):
+    summaries = []
 
     for article_file in article_files:
-        with open(os.path.join(articles_dir, article_file), "r") as f:
+        with open(Path("data/data_warehouse", blog_name, "articles", article_file), "r") as f:
             article_data = json.load(f)
 
-        # Get article content
         blog_text = article_data["blog_text"]
-
-        # Generate summary
         summary = summarize_text(blog_text)
-
-        # Get article metadata from the JSON data
         article_title = article_data["title"]
         unique_id = article_data["unique_id"]
 
-        # Create a BlogSummary instance
         blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
+        summaries.append(blog_summary)
 
-        # Save the summary to the summaries directory in the data warehouse
-        summary_filename = blog_summary.get_filename()
-        with open(os.path.join(summaries_dir, summary_filename), "w") as f:
-            json.dump(blog_summary.dict(), f, indent=4)
+    return summaries
 
-        print(f"Summary saved for '{article_title}'")
+
+def save_summaries(summaries, blog_name):
+    save_dir = Path("data/data_warehouse", blog_name, "summaries")
+    save_dir.mkdir(exist_ok=True, parents=True)
+    for summary in summaries:
+        save_path = save_dir / summary.get_filename()
+        with open(save_path, "w") as f:
+            f.write(summary.json(indent=2))
+
+
+def main(blog_name):
+    print(f"Processing {blog_name}")
+    article_files = load_articles(blog_name)
+    summaries = extract_summaries_from_articles(article_files, blog_name)
+    save_summaries(summaries, blog_name)
+    print(f"Done processing {blog_name}")
+
+
+if __name__ == "__main__":
+    main(blog_name="mit")
