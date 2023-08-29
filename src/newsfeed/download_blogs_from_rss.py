@@ -5,6 +5,7 @@ import requests
 
 LINK_TO_XML_FILE = {
     "mit": "https://news.mit.edu/rss/topic/artificial-intelligence2",
+    "big_data": "https://news.mit.edu/rss/topic/big-data",
 }
 
 
@@ -25,20 +26,21 @@ def save_metadata_info(xml_text, blog_name):
         f.write(xml_text)
 
 
-def main(blog_name, save_data=True):
-    print(f"Processing {blog_name}")
-    xml_text = get_metadata_info(blog_name)
-    if save_data == True:
-        save_metadata_info(xml_text, blog_name)
-    print(f"Done processing {blog_name}")
+def main(blog_names, save_data=True):
+    for blog_name in blog_names:
+        print(f"Processing {blog_name}")
+        xml_text = get_metadata_info(blog_name)
+        if save_data == True:
+            save_metadata_info(xml_text, blog_name)
+            print(f"Done processing {blog_name}")
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--blog_name", type=str, default="mit")
+    parser.add_argument("--blog_names", type=str, default=["mit", "big_data"])
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(blog_name=args.blog_name)
+    main(blog_names=args.blog_names)
