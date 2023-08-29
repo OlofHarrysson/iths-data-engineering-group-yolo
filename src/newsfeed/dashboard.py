@@ -11,17 +11,9 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 app.layout = dbc.Container(
     [
-        dbc.Row(dbc.Col(html.H1("Updated in the world of AI")), class_name="mt-3"),
+        dbc.Row(dbc.Col(html.H1("Updates in the world of AI")), class_name="mt-3"),
         dbc.Row(
-            [
-                dbc.Col(
-                    [
-                        html.Label("search Title:"),
-                        dbc.Input(id="input", value="", type="text"),
-                        html.Div(id="output"),
-                    ]
-                )
-            ]
+            [dbc.Col([html.Label("search Title:"), dbc.Input(id="input", value="", type="text")])]
         ),
         dbc.Card(dbc.CardBody(html.H1("Articles")), class_name="mt-3"),
         html.Button("Refresh", id="load-button"),
@@ -30,27 +22,28 @@ app.layout = dbc.Container(
 )
 
 
-@app.callback(Output("output", "children"), [Input("input", "value")])
-def updated_output(input_value):
-    return f"You entered: {input_value}"
-
-
-@app.callback(Output("summaries-container", "children"), [Input("load-button", "n_clicks")])
-def load_smmaries(n_clicks):
+@app.callback(
+    Output("summaries-container", "children"),
+    [Input("load-button", "n_clicks"), Input("input", "value")],
+)
+def load_smmaries(n_clicks, search_value):
     if n_clicks is None:
         return []
 
     summeries_path = "data/data_warehouse/mit/summaries"
-    summeries = [file for file in os.listdir(summeries_path) if file.endswith(".json")]
 
+    summeries = [file for file in os.listdir(summeries_path) if file.endswith(".json")]
     summery_components = []
 
     for summery in summeries:
-        with open(summeries_path + "/" + summery, "r") as summery_file:
+        with open(os.path.join(summeries_path, summery), "r") as summery_file:
             json_data = json.load(summery_file)
 
         title = json_data.get("title", "missing title")
         text = json_data.get("text", "missing text")
+
+        if search_value.lower() not in title.lower():
+            continue
 
         summery_component = dbc.Card(
             [
