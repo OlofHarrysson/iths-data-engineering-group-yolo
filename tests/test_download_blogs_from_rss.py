@@ -2,4 +2,4 @@ from newsfeed import download_blogs_from_rss
 
 
 def test_import_project() -> None:
-    download_blogs_from_rss.main(blog_name="mit", save_data=False)
+    download_blogs_from_rss.main(blog_name=["mit", "big_data"], save_data=False)
