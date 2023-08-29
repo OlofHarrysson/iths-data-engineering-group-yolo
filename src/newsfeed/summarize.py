@@ -59,6 +59,7 @@ def extract_summaries_from_articles(article_files, blog_name):
         unique_id = article_data["unique_id"]
 
         blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
+        print(blog_summary)
         summaries.append(blog_summary)
 
     return summaries
