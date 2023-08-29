@@ -13,3 +13,10 @@ openai==0.27.9
 python-dotenv==1.0.0
 
 discord.py
+
+dash==2.13.0
+dash-core-components==2.0.0
+dash-html-components==2.0.0
+dash-table==5.0.0
+dash-bootstrap-components==1.4.2
+plotly==5.16.1
