@@ -5,6 +5,7 @@ import requests
 
 LINK_TO_XML_FILE = {
     "mit": "https://news.mit.edu/rss/topic/artificial-intelligence2",
+    "big_data": "https://news.mit.edu/rss/topic/big-data",
 }
 
 
@@ -35,7 +36,7 @@ def main(blog_name, save_data=True):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--blog_name", type=str, default="mit")
+    parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
     return parser.parse_args()
 
 
