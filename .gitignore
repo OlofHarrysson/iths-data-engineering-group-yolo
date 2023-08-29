@@ -4,7 +4,8 @@ data/data_warehouse/*
 !data/data_lake/README.md
 !data/data_warehouse/README.md
 logs
-data/saved_articles
+data/saved_articles/saved_big_data_summeries/*
+data/saved_articles/saved_mit_summaries*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
