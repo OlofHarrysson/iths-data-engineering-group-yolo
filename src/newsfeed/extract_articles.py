@@ -54,20 +54,21 @@ def save_articles(articles, blog_name):
             f.write(article.json(indent=2))
 
 
-def main(blog_name):
-    print(f"Processing {blog_name}")
-    parsed_xml = load_metadata(blog_name)
-    articles = extract_articles_from_xml(parsed_xml)
-    save_articles(articles, blog_name)
-    print(f"Done processing {blog_name}")
+def main(blog_names):
+    for blog_name in blog_names:
+        print(f"Processing {blog_name}")
+        parsed_xml = load_metadata(blog_name)
+        articles = extract_articles_from_xml(parsed_xml)
+        save_articles(articles, blog_name)
+        print(f"Done processing {blog_name}")
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--blog_name", type=str)
+    parser.add_argument("--blog_names", type=str, default=["mit", "big_data"])
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(blog_name="mit")
+    main(blog_names=args.blog_names)
