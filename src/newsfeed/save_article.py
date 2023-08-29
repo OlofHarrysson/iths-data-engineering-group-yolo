@@ -1,16 +1,17 @@
-import json
 import os
+import shutil
 
-# path to summariezed articles
-input_directory = "data/data_warehouse/mit/summaries"
-# output path
-parent_directory = "data/saved_articles"
 
-# loop to iterate through
-for filename in os.listdir(input_directory):
-    # creating file path
-    file = os.path.join(parent_directory, filename)
+# Function to take files from input directory and save to destination folder
+def save_files(input_directory, destination_directory):
+    # loop to iterate through input directory
+    for filename in os.listdir(input_directory):
+        filepath = os.path.join(input_directory, filename)
 
-    # checking to make suree file has been created correctly
-    if os.path.isfile:
-        print(f"{file}")
+        try:  # using shutil to copy our files into a new directory and save them
+            shutil.copy(filepath, destination_directory)
+            print("Successfully copied file")
+        except PermissionError:  # error handling in case we lack permission to handle folders
+            print("Permission denied")
+        except:  # error message for all other errors
+            print("Error while copying file")
