@@ -17,9 +17,6 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # set api key for making api requests
 openai.api_key = OPENAI_API_KEY
 
-# print open_api_key
-# print(OPENAI_API_KEY)
-
 
 # Define a function to summarize text using Openai's API
 def summarize_text(blog_text):
