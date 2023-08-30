@@ -52,22 +52,24 @@ def extract_summaries_from_articles(article_files, blog_name):
             "data/data_warehouse", blog_name, "summaries", article_name
         )
 
-    if os.path.isfile(destination_directory):
-        print("\nSummary already exists\n")
+        if os.path.isfile(destination_directory) == True:
+            print("\nSummary already exists\n")
 
-    else:
-        for article_file in article_files:
-            with open(Path("data/data_warehouse", blog_name, "articles", article_file), "r") as f:
-                article_data = json.load(f)
+        else:
+            for article_file in article_files:
+                with open(
+                    Path("data/data_warehouse", blog_name, "articles", article_file), "r"
+                ) as f:
+                    article_data = json.load(f)
 
-            blog_text = article_data["blog_text"]
-            summary = summarize_text(blog_text)
-            article_title = article_data["title"]
-            unique_id = article_data["unique_id"]
+                blog_text = article_data["blog_text"]
+                summary = summarize_text(blog_text)
+                article_title = article_data["title"]
+                unique_id = article_data["unique_id"]
 
-            blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
-            print(blog_summary)
-            summaries.append(blog_summary)
+                blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
+                print(blog_summary)
+                summaries.append(blog_summary)
 
     return summaries
 
