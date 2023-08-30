@@ -48,7 +48,7 @@ def extract_summaries_from_articles(article_files, blog_name):
     summaries = []
     # try:
     for article_file in article_files:
-        with open(Path("data/data_warehouse", blog_name, "articles", article_file)) as f:
+        with open(Path("data/data_warehouse", blog_name, "articles", article_file), "r") as f:
             article_data = json.load(f)
 
         blog_text = article_data["blog_text"]
