@@ -1,4 +1,5 @@
 # import modules
+import argparse
 import json
 import os
 from pathlib import Path
@@ -45,22 +46,22 @@ def load_articles(blog_name):
 
 def extract_summaries_from_articles(article_files, blog_name):
     summaries = []
-    try:
-        for article_file in article_files:
-            with open(Path("data/data_warehouse", blog_name, "articles", article_file), "x") as f:
-                article_data = json.load(f)
+    # try:
+    for article_file in article_files:
+        with open(Path("data/data_warehouse", blog_name, "articles", article_file), "r") as f:
+            article_data = json.load(f)
 
-            blog_text = article_data["blog_text"]
-            summary = summarize_text(blog_text)
-            article_title = article_data["title"]
-            unique_id = article_data["unique_id"]
+        blog_text = article_data["blog_text"]
+        summary = summarize_text(blog_text)
+        article_title = article_data["title"]
+        unique_id = article_data["unique_id"]
 
-            blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
-            print(blog_summary)
-            summaries.append(blog_summary)
+        blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
+        print(blog_summary)
+        summaries.append(blog_summary)
 
-    except FileExistsError:
-        print("Summary already exists")
+    # except FileExistsError:
+    # print("Summary already exists")
 
     return summaries
 
@@ -82,5 +83,12 @@ def main(blog_name):
     print(f"Done processing {blog_name}")
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    main(blog_name="mit")
+    args = parse_args()
+    main(blog_name=args.blog_name)
