@@ -64,10 +64,10 @@ def main(blog_name):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--blog_name", type=str)
+    parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
-    main(blog_name="mit")
+    main(blog_name=args.blog_name)
