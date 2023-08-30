@@ -46,22 +46,28 @@ def load_articles(blog_name):
 
 def extract_summaries_from_articles(article_files, blog_name):
     summaries = []
-    # try:
-    for article_file in article_files:
-        with open(Path("data/data_warehouse", blog_name, "articles", article_file), "r") as f:
-            article_data = json.load(f)
 
-        blog_text = article_data["blog_text"]
-        summary = summarize_text(blog_text)
-        article_title = article_data["title"]
-        unique_id = article_data["unique_id"]
+    for article_name in article_files:
+        destination_directory = os.path.join(
+            "data/data_warehouse", blog_name, "summaries", article_name
+        )
 
-        blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
-        print(blog_summary)
-        summaries.append(blog_summary)
+    if os.path.isfile(destination_directory):
+        print("\nSummary already exists\n")
 
-    # except FileExistsError:
-    # print("Summary already exists")
+    else:
+        for article_file in article_files:
+            with open(Path("data/data_warehouse", blog_name, "articles", article_file), "r") as f:
+                article_data = json.load(f)
+
+            blog_text = article_data["blog_text"]
+            summary = summarize_text(blog_text)
+            article_title = article_data["title"]
+            unique_id = article_data["unique_id"]
+
+            blog_summary = BlogSummary(unique_id=unique_id, title=article_title, text=summary)
+            print(blog_summary)
+            summaries.append(blog_summary)
 
     return summaries
 
