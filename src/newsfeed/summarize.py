@@ -23,7 +23,7 @@ openai.api_key = OPENAI_API_KEY
 # Define a function to summarize text using Openai's API
 def summarize_text(blog_text):
     # create prompt for the api request
-    prompt = f"Summarize the following text : {blog_text}"
+    prompt = f"Summarize the following text concisely : {blog_text}"
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -60,9 +60,9 @@ def extract_summaries_from_articles(article_files, blog_name):
 
             blog_text = article_data["blog_text"]
 
-            if args.sum_from == "local":
+            if args.model_type == "local":
                 summary = summerise_text_local(blog_text)
-            if args.sum_from == "gpt":
+            if args.model_type == "gpt":
                 summary = summarize_text(blog_text)
 
             article_title = article_data["title"]
@@ -95,7 +95,7 @@ def main(blog_name):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
-    parser.add_argument("sum_from", type=str, default="gpt", choices=["gpt", "local"])
+    parser.add_argument("--model_type", type=str, default="gpt", choices=["gpt", "local"])
     return parser.parse_args()
 
 
