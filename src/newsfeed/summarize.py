@@ -6,6 +6,7 @@ from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
+from model import LLM
 
 from newsfeed.datatypes import BlogInfo, BlogSummary
 
@@ -58,7 +59,8 @@ def extract_summaries_from_articles(article_files, blog_name):
                 article_data = json.load(f)
 
             blog_text = article_data["blog_text"]
-            summary = summarize_text(blog_text)
+            # summary = summarize_text(blog_text)
+            summary = LLM(blog_text)
             article_title = article_data["title"]
             unique_id = article_data["unique_id"]
 
