@@ -6,7 +6,7 @@ from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
-from model import LLM
+from model import summerise_text_local
 
 from newsfeed.datatypes import BlogInfo, BlogSummary
 
@@ -59,8 +59,12 @@ def extract_summaries_from_articles(article_files, blog_name):
                 article_data = json.load(f)
 
             blog_text = article_data["blog_text"]
-            # summary = summarize_text(blog_text)
-            summary = LLM(blog_text)
+
+            if args.sum_from == "local":
+                summary = summerise_text_local(blog_text)
+            if args.sum_from == "gpt":
+                summary = summarize_text(blog_text)
+
             article_title = article_data["title"]
             unique_id = article_data["unique_id"]
 
@@ -91,6 +95,7 @@ def main(blog_name):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
+    parser.add_argument("sum_from", type=str, default="gpt", choices=["gpt", "local"])
     return parser.parse_args()
 
 

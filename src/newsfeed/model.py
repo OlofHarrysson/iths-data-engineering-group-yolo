@@ -4,7 +4,7 @@ import os
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
 
 
-def LLM(blog_text):
+def summerise_text_local(blog_text):
     model_name = "google/pegasus-cnn_dailymail"
     model = PegasusForConditionalGeneration.from_pretrained(model_name)
     tokenizer = PegasusTokenizer.from_pretrained(model_name)
