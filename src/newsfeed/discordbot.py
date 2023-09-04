@@ -31,10 +31,10 @@ def main(blog_name):
     with open(os.path.join(summaries_path, first_summary), "r") as f:
         json_data = json.load(f)
 
-        title = json_data.get("title", "missing title")
+        title = json_data["title"]
         print(title)
-        text = json_data.get("text", "missing text")
-        link = json_data.get("link", "missing link")
+        text = json_data["text"]
+        link = json_data["link"]
         embed = create_embed(blog_name, title, text, link)
         send_to_discord(embed)
 
