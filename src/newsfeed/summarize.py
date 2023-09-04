@@ -6,7 +6,7 @@ from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
-from model import summerise_text_local
+from model import summerise_text_local, summerise_text_local_simple
 
 from newsfeed.datatypes import BlogInfo, BlogSummary
 
@@ -62,15 +62,21 @@ def extract_summaries_from_articles(article_files, blog_name):
 
             if args.model_type == "local":
                 summary = summerise_text_local(blog_text)
+                simple_summary = summerise_text_local_simple(blog_text)
             if args.model_type == "gpt":
                 summary = summarize_text(blog_text)
+                simple_summary = ""
 
             article_title = article_data["title"]
             unique_id = article_data["unique_id"]
             link = article_data["link"]
 
             blog_summary = BlogSummary(
-                unique_id=unique_id, title=article_title, text=summary, link=link
+                unique_id=unique_id,
+                title=article_title,
+                text=summary,
+                simple=simple_summary,
+                link=link,
             )
             print(blog_summary)
             summaries.append(blog_summary)
