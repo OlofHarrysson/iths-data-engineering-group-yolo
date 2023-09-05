@@ -76,6 +76,7 @@ def extract_summaries_from_articles(article_files, blog_name):
             article_title = article_data["title"]
             unique_id = article_data["unique_id"]
             link = article_data["link"]
+            published = article_data["published"]
 
             blog_summary = BlogSummary(
                 unique_id=unique_id,
@@ -83,6 +84,7 @@ def extract_summaries_from_articles(article_files, blog_name):
                 text=summary,
                 simple=simple_summary,
                 link=link,
+                published=published,
             )
             print(blog_summary)
             summaries.append(blog_summary)

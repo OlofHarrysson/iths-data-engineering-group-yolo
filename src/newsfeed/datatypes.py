@@ -25,6 +25,7 @@ class BlogSummary(pydantic.BaseModel):
     text: str
     simple: str
     link: str
+    published: date
 
     def get_filename(self):
         return f'{self.title.replace(" ", "_")}.json'
