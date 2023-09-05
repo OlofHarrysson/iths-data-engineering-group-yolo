@@ -15,7 +15,7 @@ class TextSummarizer:
             sim_prompt = "Summerise this text for a child: " + blog_text
             max_length = 150
         else:
-            sim_prompt = "Summerise this text: " + blog_text
+            sim_prompt = "Summerise this text concisely: " + blog_text
             max_length = 150
 
         inputs = self.tokenizer.encode(

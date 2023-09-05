@@ -8,7 +8,7 @@ import openai
 from dotenv import load_dotenv
 from model import TextSummarizer
 
-from newsfeed.datatypes import BlogInfo, BlogSummary
+from newsfeed.datatypes import BlogSummary
 
 # load environment variable from .env file
 load_dotenv()
@@ -24,7 +24,7 @@ def summarize_text(blog_text, non_techinical=False):
     # Define a function to summarize text using Openai's API
 
     if non_techinical:
-        prompt = f"Summarize the following text for a child : {blog_text}"
+        prompt = f"Summarize the following text with no technical words so that it can be understood by a child: {blog_text}"
 
     else:
         prompt = f"Summarize the following text concisely : {blog_text}"
