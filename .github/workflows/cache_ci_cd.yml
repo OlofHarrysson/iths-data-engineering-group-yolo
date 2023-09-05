@@ -20,20 +20,25 @@ jobs:
 
     #  Caching Python packages
     - name: Cache Python packages
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip   # specify the path where python packages are cached
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }} # cache is uniqe for different os and changes in requirements.txt
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }} # cache is uniqe for different os and changes in requirements.txt
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
 
     - name: Install Python
       uses: actions/setup-python@v4 # calls on repository with installation of Python
       with:
         python-version: '3.10' # this version of Python is installed
 
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
 
     - name: pre-commit
       uses: pre-commit/action@v3.0.0
