@@ -22,6 +22,8 @@ jobs:
       uses: actions/setup-python@v4 #calls on repository with installment of python
       with:
         python-version: '3.10' #this version of python  is installed
+        cache: 'pip' # caching pip dependencies
+
 
     - name: Install dependencies
       run: |
