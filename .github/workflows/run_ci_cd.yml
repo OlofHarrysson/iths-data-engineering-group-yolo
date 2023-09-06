@@ -37,15 +37,6 @@ jobs:
       restore-keys: |
         ${{ runner.os }}-pip-
 
-    - name: Cache Python packages for Windows
-      uses: actions/cache@v3
-      if: startsWith(runner.os, 'Windows')
-      with:
-      path: ~\AppData\Local\pip\Cache
-      key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-      restore-keys: |
-        ${{ runner.os }}-pip-
-
 
     - name: Install Python
       uses: actions/setup-python@v4 # calls on repository with installation of Python
