@@ -23,4 +23,5 @@ plotly==5.16.1
 
 #model
 torch
+sentencepiece
 transformers
