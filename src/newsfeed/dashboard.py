@@ -50,29 +50,6 @@ def load_smmaries(n_clicks, search_value):
 
         summery_components.append(summery_component)
 
-    """summeries = [file for file in os.listdir(summeries_path) if file.endswith(".json")]
-    summery_components = []
-
-    for summery in summeries:
-        with open(os.path.join(summeries_path, summery), "r") as summery_file:
-            json_data = json.load(summery_file)
-
-        title = json_data.get("title", "missing title")
-        text = json_data.get("text", "missing text")
-
-        if search_value.lower() not in title.lower():
-            continue
-
-        summery_component = dbc.Card(
-            [
-                dbc.CardHeader(html.H2(title)),
-                dbc.CardBody(html.P(text)),
-            ],
-            class_name="mb-3",
-        )
-
-        summery_components.append(summery_component)"""
-
     return summery_components
 
 

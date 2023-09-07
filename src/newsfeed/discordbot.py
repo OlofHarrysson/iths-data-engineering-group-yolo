@@ -26,19 +26,12 @@ def send_to_discord(embed):
 
 def main(blog_name):
     summaries_path = Path("data/data_warehouse") / blog_name / "summaries"
-    # summaries = [file for file in os.listdir(summaries_path) if file.endswith(".json")]
+
     articles = load_files(summaries_path)
 
     first_summary = articles[2]
-    # with open(os.path.join(summaries_path, first_summary), "r") as f:
-    # json_data = json.load(f)
-
-    # title = json_data["title"]
     title = first_summary[0]
-    print(title)
-    # text = json_data["text"]
     text = first_summary[1]
-    # link = json_data["link"]
     link = "https://news.mit.edu/2023/honing-robot-perception-mapping-0710"
     embed = create_embed(blog_name, title, text, link)
     send_to_discord(embed)
