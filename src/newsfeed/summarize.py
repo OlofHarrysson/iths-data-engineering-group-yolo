@@ -50,7 +50,7 @@ def load_articles(blog_name):
     return article_files
 
 
-def extract_summaries_from_articles(article_files, blog_name, args):
+def extract_summaries_from_articles(article_files, blog_name):
     summaries = []
     local = TextSummarizer()
 
@@ -104,7 +104,7 @@ def save_summaries(summaries, blog_name):
 def main(blog_name):
     print(f"Processing {blog_name}")
     article_files = load_articles(blog_name)
-    summaries = extract_summaries_from_articles(article_files, blog_name, args)
+    summaries = extract_summaries_from_articles(article_files, blog_name)
     save_summaries(summaries, blog_name)
     print(f"Done processing {blog_name}")
 
