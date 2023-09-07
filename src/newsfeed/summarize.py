@@ -6,9 +6,9 @@ from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
-from model import TextSummarizer
 
 from newsfeed.datatypes import BlogSummary
+from newsfeed.model import TextSummarizer
 
 # load environment variable from .env file
 load_dotenv()
