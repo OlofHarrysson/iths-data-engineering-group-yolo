@@ -6,6 +6,7 @@ import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+from utils import load_files
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
@@ -31,24 +32,18 @@ def load_smmaries(n_clicks, search_value):
         return []
 
     summeries_path = "data/data_warehouse/mit/summaries"
-
-    summeries = [file for file in os.listdir(summeries_path) if file.endswith(".json")]
     summery_components = []
 
-    for summery in summeries:
-        with open(os.path.join(summeries_path, summery), "r") as summery_file:
-            json_data = json.load(summery_file)
+    articles = load_files(summeries_path)
 
-        title = json_data.get("title", "missing title")
-        text = json_data.get("text", "missing text")
-
-        if search_value.lower() not in title.lower():
+    for article in articles:
+        if search_value.lower() not in article[0].lower():
             continue
 
         summery_component = dbc.Card(
             [
-                dbc.CardHeader(html.H2(title)),
-                dbc.CardBody(html.P(text)),
+                dbc.CardHeader(html.H2(article[0])),
+                dbc.CardBody(html.P(article[1])),
             ],
             class_name="mb-3",
         )

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import discord
 from discord import SyncWebhook
+from utils import load_files
 
 WEBHOOK_URL = "https://discord.com/api/webhooks/1131522847509069874/Lwk1yVc4w623xpRPkKYu9faFdMNvV5HTZ3TCcL5DgsIgeqhEvo9tBookvuh2S4IWysTt"
 
@@ -25,18 +26,15 @@ def send_to_discord(embed):
 
 def main(blog_name):
     summaries_path = Path("data/data_warehouse") / blog_name / "summaries"
-    summaries = [file for file in os.listdir(summaries_path) if file.endswith(".json")]
 
-    first_summary = summaries[2]
-    with open(os.path.join(summaries_path, first_summary), "r") as f:
-        json_data = json.load(f)
+    articles = load_files(summaries_path)
 
-        title = json_data["title"]
-        print(title)
-        text = json_data["text"]
-        link = json_data["link"]
-        embed = create_embed(blog_name, title, text, link)
-        send_to_discord(embed)
+    first_summary = articles[2]
+    title = first_summary[0]
+    text = first_summary[1]
+    link = "https://news.mit.edu/2023/honing-robot-perception-mapping-0710"
+    embed = create_embed(blog_name, title, text, link)
+    send_to_discord(embed)
 
 
 def parse_args():
