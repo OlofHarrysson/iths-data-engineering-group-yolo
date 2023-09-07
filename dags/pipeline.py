@@ -6,20 +6,20 @@ from newsfeed import download_blogs_from_rss, extract_articles, summarize
 
 
 @task(task_id="download_blogs_from_rss_task", provide_context=True)
-def download_blogs_from_rss_task(**kwargs):
+def download_blogs_from_rss_task():
     download_blogs_from_rss.main(blog_name="mit")
     download_blogs_from_rss.main(blog_name="big_data")
 
 
 @task(task_id="extract_articles_task", provide_context=True)
-def extract_articles_task(**kwargs):
+def extract_articles_task():
     extract_articles.main(blog_name="mit")
     extract_articles.main(blog_name="big_data")
 
 
 @task(task_id="summarize_task", provide_context=True)
 def summarize_task(**kwargs):
-    summarize.main(blog_name="mit", args=kwargs)
+    summarize.main(blog_name="mit", args=kwargs["dag_run"].conf)
     # summarize.main()
 
 
