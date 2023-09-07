@@ -7,7 +7,7 @@ import discord
 from discord import SyncWebhook
 from utils import load_files
 
-WEBHOOK_URL = "https://discordapp.com/api/webhooks/1143848187539509299/TWwa_kiI4Fbb2g59mod_rG9zRxNc3WSVMPkbfk9xhAi-7X017ZGvmxZ6CIYJrk0n52_c"
+WEBHOOK_URL = "https://discord.com/api/webhooks/1131522847509069874/Lwk1yVc4w623xpRPkKYu9faFdMNvV5HTZ3TCcL5DgsIgeqhEvo9tBookvuh2S4IWysTt"
 
 
 def create_embed(blog_name, title, text, link):
