@@ -5,7 +5,8 @@ from pathlib import Path
 
 import discord
 from discord import SyncWebhook
-from utils import load_files
+
+from newsfeed.utils import load_files
 
 WEBHOOK_URL = "https://discord.com/api/webhooks/1131522847509069874/Lwk1yVc4w623xpRPkKYu9faFdMNvV5HTZ3TCcL5DgsIgeqhEvo9tBookvuh2S4IWysTt"
 
