@@ -29,9 +29,9 @@ def main(blog_name):
 
     articles = load_files(summaries_path)
 
-    first_summary = articles[2]
-    title = first_summary[0]
-    text = first_summary[1]
+    first_summary = articles[0]
+    title = first_summary["title"]
+    text = first_summary["text"]
     link = "https://news.mit.edu/2023/honing-robot-perception-mapping-0710"
     embed = create_embed(blog_name, title, text, link)
     send_to_discord(embed)
