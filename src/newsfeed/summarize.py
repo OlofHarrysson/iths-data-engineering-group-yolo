@@ -6,9 +6,9 @@ from pathlib import Path
 
 import openai
 from dotenv import load_dotenv
-from model import TextSummarizer
 
 from newsfeed.datatypes import BlogSummary
+from newsfeed.model import TextSummarizer
 
 # load environment variable from .env file
 load_dotenv()
@@ -52,10 +52,13 @@ def load_articles(blog_name):
 
 def extract_summaries_from_articles(article_files, blog_name, args):
     summaries = []
-    local = TextSummarizer()
+    if args.model_type == "local":
+        print("Using local model")
+        local = TextSummarizer()
 
     for article_file in article_files:
         summary_file = os.path.join("data/data_warehouse", blog_name, "summaries", article_file)
+        print(f"Processing article {article_file}")
 
         if os.path.isfile(summary_file) == True:
             print(f"\nSummary file {summary_file} already exists\n")
