@@ -33,6 +33,7 @@ def main(blog_name):
     first_summary = articles[0]
     title = first_summary["title"]
     text = first_summary["text"]
+    simple = first_summary["simple"]
     link = "https://news.mit.edu/2023/honing-robot-perception-mapping-0710"
     embed = create_embed(blog_name, title, text, link)
     send_to_discord(embed)
