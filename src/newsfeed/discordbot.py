@@ -17,8 +17,11 @@ def create_embed(blog_name, title, text, link, date):
         title=title, url=link, description=text, color=discord.Color.blue()  # color=0xFF5733
     )
     embed.set_author(name=blog_name.upper(), url="https://news.mit.edu/")
-    embed.add_field(name="Published Date", value=date, inline=False)
-    embed.set_footer(text=" ⭐ Presented by : iths-data-engineering-group-yolo ⭐")
+    embed.add_field(name="Published Date :", value=date, inline=False)
+    embed.add_field(
+        name="⭐ Presented by : iths-data-engineering-group-yolo ⭐", value=" ", inline=False
+    )
+    # embed.set_footer(text=" ⭐ Presented by : --iths-data-engineering-group-yolo-- ⭐")
     return embed
 
 
