@@ -43,9 +43,12 @@ def summarize_text(blog_text, non_technical=False):
 
 
 def load_articles(blog_name):
+    # path of the article with their specified blog name
     articles_path = Path("data/data_warehouse") / blog_name / "articles"
 
-    article_files = [file for file in os.listdir(articles_path) if file.endswith(".json")]
+    article_files = [
+        file for file in os.listdir(articles_path) if file.endswith(".json")
+    ]  # list of all articles
 
     return article_files
 
