@@ -5,17 +5,19 @@ from pathlib import Path
 
 import discord
 from discord import SyncWebhook
+from utils import load_files
 
 from newsfeed.utils import load_files
 
 WEBHOOK_URL = "https://discord.com/api/webhooks/1131522847509069874/Lwk1yVc4w623xpRPkKYu9faFdMNvV5HTZ3TCcL5DgsIgeqhEvo9tBookvuh2S4IWysTt"
 
 
-def create_embed(blog_name, title, text, link):
+def create_embed(blog_name, title, text, link, date):
     embed = discord.Embed(
         title=title, url=link, description=text, color=discord.Color.blue()  # color=0xFF5733
     )
     embed.set_author(name=blog_name.upper(), url="https://news.mit.edu/")
+    embed.add_field(name="Published Date", value=date, inline=False)
     embed.set_footer(text=" ⭐ Presented by : iths-data-engineering-group-yolo ⭐")
     return embed
 
@@ -30,18 +32,27 @@ def main(blog_name):
 
     articles = load_files(summaries_path)
 
-    first_summary = articles[0]
-    title = first_summary["title"]
-    text = first_summary["text"]
-    simple = first_summary["simple"]
-    link = "https://news.mit.edu/2023/honing-robot-perception-mapping-0710"
-    embed = create_embed(blog_name, title, text, link)
-    send_to_discord(embed)
+    if articles:
+        latest = articles[0]
+
+        if args.summary_type == "text":
+            embed = create_embed(
+                blog_name, latest["title"], latest["text"], latest["link"], latest["date"]
+            )
+            send_to_discord(embed)
+
+        if args.summary_type == "simple":
+            embed = create_embed(
+                blog_name, latest["title"], latest["simple"], latest["link"], latest["date"]
+            )
+            send_to_discord(embed)
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
+    parser.add_argument("--summary_type", type=str, default="text", choices=["text", "simple"])
+
     return parser.parse_args()
 
 
