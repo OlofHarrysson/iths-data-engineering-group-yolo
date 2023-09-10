@@ -8,34 +8,47 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 from utils import load_files
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+# themes DARKLY, CYBORG, QUARTZ, MORPH, SKETCHY, SLATE, SOLAR
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
 
 app.layout = dbc.Container(
     [
-        dbc.Row(dbc.Col(html.H1("News in the world of AI")), class_name="mt-3"),
-        dbc.Row(
-            [dbc.Col([html.Label("Search Title:"), dbc.Input(id="input", value="", type="text")])]
-        ),
-        dbc.Card(dbc.CardBody(html.H1("Articles")), class_name="mt-3"),
+        dbc.Card(dbc.CardBody(html.H1("News in the world of AI")), class_name="mt-3"),
         dbc.Col(
             dcc.Tabs(
                 id="blog-tabs",
                 value="tab-1",
                 children=[
                     dcc.Tab(
-                        label="mit",
+                        label="Technical",
                         value="tab-1",
                         className="custom-tab",
                         selected_className="custom-tab--selected",
                     ),
                     dcc.Tab(
-                        label="big_data",
+                        label="Non-Technical",
                         value="tab-2",
                         className="custom-tab",
                         selected_className="custom-tab--selected",
                     ),
                 ],
             )
+        ),
+        dbc.Card(dbc.CardBody(html.H1("Articles")), class_name="mt-3"),
+        dbc.Row(
+            [dbc.Col([html.H5("Search Title:"), dbc.Input(id="input", value="", type="text")])]
+        ),
+        dbc.Col(html.H5("Blog")),
+        dbc.Col(
+            dcc.Dropdown(
+                id="blog-picker",
+                options=[
+                    {"label": option[0], "value": option[1]}
+                    for option in (("MIT", "mit"), ("Big data", "big_data"))
+                ],
+                value="mit",
+            ),
+            class_name="mb-3",
         ),
         html.Div(id="summaries-container"),
     ]
@@ -44,13 +57,13 @@ app.layout = dbc.Container(
 
 @app.callback(
     Output("summaries-container", "children"),
-    [Input("blog-tabs", "value"), Input("input", "value")],
+    [Input("blog-tabs", "value"), Input("input", "value"), Input("blog-picker", "value")],
 )
-def load_smmaries(tab, search_value):
+def load_smmaries(tab, search_value, blog):
     if tab == "tab-1":
-        blog = "mit"
+        content = "text"
     elif tab == "tab-2":
-        blog = "big_data"
+        content = "simple"
 
     summeries_path = "data/data_warehouse/" + blog + "/summaries"
     summery_components = []
@@ -67,8 +80,7 @@ def load_smmaries(tab, search_value):
                 dbc.CardBody(
                     html.Div(
                         [
-                            html.P(article["text"]),
-                            html.P(article["simple"]),
+                            html.P(article[content]),
                             html.A("Read full article", href=article["link"], target="blank"),
                             html.P(article["date"]),
                         ]
@@ -79,8 +91,6 @@ def load_smmaries(tab, search_value):
         )
 
         summery_components.append(summery_component)
-
-    # return summery_components
 
     row_components = []
 
