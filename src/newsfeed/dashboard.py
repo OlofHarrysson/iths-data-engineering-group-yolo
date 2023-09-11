@@ -1,15 +1,13 @@
-import json
-import os
-
 import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-from utils import load_files
+
+from newsfeed.utils import load_files
 
 # themes DARKLY, CYBORG, QUARTZ, MORPH, SKETCHY, SLATE, SOLAR
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SLATE])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.QUARTZ])
 
 app.layout = dbc.Container(
     [
@@ -34,11 +32,11 @@ app.layout = dbc.Container(
                 ],
             )
         ),
-        dbc.Card(dbc.CardBody(html.H1("Articles")), class_name="mt-3"),
+        # dbc.Card(dbc.CardBody(html.H1("Articles")), class_name="mt-3"),
         dbc.Row(
             [dbc.Col([html.H5("Search Title:"), dbc.Input(id="input", value="", type="text")])]
         ),
-        dbc.Col(html.H5("Blog")),
+        dbc.Col(html.H5("Blog:")),
         dbc.Col(
             dcc.Dropdown(
                 id="blog-picker",
@@ -68,7 +66,7 @@ def load_smmaries(tab, search_value, blog):
     summeries_path = "data/data_warehouse/" + blog + "/summaries"
     summery_components = []
 
-    articles = load_files(summeries_path)
+    articles = load_files(summeries_path)[:16]
 
     for article in articles:
         if search_value.lower() not in article["title"].lower():
@@ -95,10 +93,19 @@ def load_smmaries(tab, search_value, blog):
     row_components = []
 
     for i in range(0, len(summery_components), 2):
-        row = dbc.Row(
-            [dbc.Col(summery_components[i], width=6), dbc.Col(summery_components[i + 1], width=6)],
-            class_name="mb-3",
-        )
+        if i + 1 < len(summery_components):
+            row = dbc.Row(
+                [
+                    dbc.Col(summery_components[i], width=6),
+                    dbc.Col(summery_components[i + 1], width=6),
+                ],
+                class_name="mb-3",
+            )
+        else:
+            row = dbc.Row(
+                [dbc.Col(summery_components[i], width=6), dbc.Col(width=6)],
+                class_name="mb-3",
+            )
 
         row_components.append(row)
 
