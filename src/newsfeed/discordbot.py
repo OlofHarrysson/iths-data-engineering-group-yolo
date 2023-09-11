@@ -28,7 +28,7 @@ def create_embed(blog_name, title, text, link, date):
     return embed
 
 
-def send_to_discord(embed):
+def send_to_discord(embed, WEBHOOK_URL):
     webhook = SyncWebhook.from_url(WEBHOOK_URL)
     webhook.send(embed=embed)
 
@@ -45,13 +45,13 @@ def main(blog_name):
             embed = create_embed(
                 blog_name, latest["title"], latest["text"], latest["link"], latest["date"]
             )
-            send_to_discord(embed)
+            send_to_discord(embed, WEBHOOK_URL_text)
 
         if args.summary_type == "simple":
             embed = create_embed(
                 blog_name, latest["title"], latest["simple"], latest["link"], latest["date"]
             )
-            send_to_discord(embed)
+            send_to_discord(embed, WEBHOOK_URL_simple)
 
 
 def parse_args():
