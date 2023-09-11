@@ -5,11 +5,14 @@ from pathlib import Path
 
 import discord
 from discord import SyncWebhook
-from utils import load_files
 
 from newsfeed.utils import load_files
 
-WEBHOOK_URL = "https://discord.com/api/webhooks/1131522847509069874/Lwk1yVc4w623xpRPkKYu9faFdMNvV5HTZ3TCcL5DgsIgeqhEvo9tBookvuh2S4IWysTt"
+# from utils import load_files
+
+
+WEBHOOK_URL_text = "https://discordapp.com/api/webhooks/1150692823516065792/y2sPB3SRB9aLI1iqYI2egHqSP7anjII9c73lQOA-bRsHVjhn9KHf3SLryGqOaT8ourhc"
+WEBHOOK_URL_simple = "https://discordapp.com/api/webhooks/1150693022028288054/-PdMDu3IKsfKQnXE3-GpZD1bi3gVPZjcImyNXRbh54AeAfKVd7uuOLdVioC60qygS4hc"
 
 
 def create_embed(blog_name, title, text, link, date):
