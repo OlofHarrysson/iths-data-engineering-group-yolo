@@ -1,6 +1,6 @@
 import argparse
-import json
 import os
+import threading
 from pathlib import Path
 
 import discord
@@ -33,6 +33,19 @@ def send_to_discord(embed, WEBHOOK_URL):
     webhook.send(embed=embed)
 
 
+def send_text_and_simple(blog_name, latest):
+    embed_text = create_embed(
+        blog_name, latest["title"], latest["text"], latest["link"], latest["date"]
+    )
+
+    embed_simple = create_embed(
+        blog_name, latest["title"], latest["simple"], latest["link"], latest["date"]
+    )
+
+    threading.Thread(target=send_to_discord, args=(embed_text, WEBHOOK_URL_text)).start()
+    threading.Thread(target=send_to_discord, args=(embed_simple, WEBHOOK_URL_simple)).start()
+
+
 def main(blog_name):
     summaries_path = Path("data/data_warehouse") / blog_name / "summaries"
 
@@ -40,25 +53,12 @@ def main(blog_name):
 
     if articles:
         latest = articles[0]
-
-        if args.summary_type == "text":
-            embed = create_embed(
-                blog_name, latest["title"], latest["text"], latest["link"], latest["date"]
-            )
-            send_to_discord(embed, WEBHOOK_URL_text)
-
-        if args.summary_type == "simple":
-            embed = create_embed(
-                blog_name, latest["title"], latest["simple"], latest["link"], latest["date"]
-            )
-            send_to_discord(embed, WEBHOOK_URL_simple)
+        send_text_and_simple(blog_name, latest)
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--blog_name", type=str, default="mit", choices=["mit", "big_data"])
-    parser.add_argument("--summary_type", type=str, default="text", choices=["text", "simple"])
-
     return parser.parse_args()
 
 
