@@ -26,22 +26,18 @@ def summarize_task():
     )
 
 
-# def summarize_task():
-# summarize.main(blog_name='mit')
-
-
 @task(task_id="discord_task")
 def discord_task():
-    discordbot.main(blog_name="mit")
-
-
-default_args = {"--model_type": "gpt"}
+    BashOperator(
+        task_id="discord_task",
+        bash_command="python src/newsfeed/discordbot.py --blog_name mit",
+    )
 
 
 @dag(
     dag_id="pipeline",
     start_date=datetime(2023, 9, 8),
-    schedule_interval=None,
+    schedule_interval="@daily",
     catchup=False,
 )
 def pipeline():
