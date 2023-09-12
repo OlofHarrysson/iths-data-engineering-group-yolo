@@ -28,3 +28,4 @@ transformers
 
 ipykernel
 matplotlib
+seaborn
