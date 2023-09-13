@@ -25,6 +25,7 @@ class BlogSummary(pydantic.BaseModel):
     text: str
     simple: str
     swedish: str
+    swe_title: str
     link: str
     published: date
 

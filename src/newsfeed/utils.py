@@ -16,6 +16,8 @@ def load_files(path):
                 "title": json_data.get("title"),
                 "text": json_data.get("text"),
                 "simple": json_data.get("simple"),
+                "swedish": json_data.get("swedish"),
+                "swe_title": json_data.get("swe_title"),
                 "link": json_data.get("link"),
                 "date": json_data.get("published"),
             }
