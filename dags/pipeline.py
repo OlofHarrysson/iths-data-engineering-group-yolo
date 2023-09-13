@@ -37,7 +37,7 @@ def discord_task():
 @dag(
     dag_id="pipeline",
     start_date=datetime(2023, 9, 8),
-    schedule_interval="@daily",
+    schedule_interval=None,
     catchup=False,
 )
 def pipeline():
