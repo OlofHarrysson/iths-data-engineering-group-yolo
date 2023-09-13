@@ -20,11 +20,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 
-def summarize_text(blog_text, non_techinical=False):
+def summarize_text(blog_text, non_technical=False):
     # Define a function to summarize text using Openai's API
 
-    if non_techinical:
-        prompt = f"Summarize the following text with no technical words so that it can be understood by a child: {blog_text}"
+    if non_technical:
+        prompt = f"Summarize the following text concisely with no technical words so that it can be understood by a child: {blog_text}"
 
     else:
         prompt = f"Summarize the following text concisely : {blog_text}"
@@ -43,9 +43,12 @@ def summarize_text(blog_text, non_techinical=False):
 
 
 def load_articles(blog_name):
+    # path of the article with their specified blog name
     articles_path = Path("data/data_warehouse") / blog_name / "articles"
 
-    article_files = [file for file in os.listdir(articles_path) if file.endswith(".json")]
+    article_files = [
+        file for file in os.listdir(articles_path) if file.endswith(".json")
+    ]  # list of all articles
 
     return article_files
 
@@ -71,10 +74,11 @@ def extract_summaries_from_articles(article_files, blog_name, args):
 
             if args.model_type == "local":
                 summary = local.summerize_text_local(blog_text, non_technical=False)
-                simple_summary = local.summerize_text_local(blog_text)
+                simple_summary = local.summerize_text_local(blog_text, non_technical=True)
+
             if args.model_type == "gpt":
-                summary = summarize_text(blog_text, non_techinical=False)
-                simple_summary = summarize_text(blog_text)
+                summary = summarize_text(blog_text, non_technical=False)
+                simple_summary = summarize_text(blog_text, non_technical=True)
 
             article_title = article_data["title"]
             unique_id = article_data["unique_id"]
@@ -92,23 +96,21 @@ def extract_summaries_from_articles(article_files, blog_name, args):
             print(blog_summary)
             summaries.append(blog_summary)
 
+            # saves summary
+            save_dir = Path("data/data_warehouse", blog_name, "summaries")
+            save_dir.mkdir(exist_ok=True, parents=True)
+            for summary in summaries:
+                save_path = save_dir / summary.get_filename()
+                with open(save_path, "w") as f:
+                    f.write(summary.json(indent=2))
+
     return summaries
-
-
-def save_summaries(summaries, blog_name):
-    save_dir = Path("data/data_warehouse", blog_name, "summaries")
-    save_dir.mkdir(exist_ok=True, parents=True)
-    for summary in summaries:
-        save_path = save_dir / summary.get_filename()
-        with open(save_path, "w") as f:
-            f.write(summary.json(indent=2))
 
 
 def main(blog_name):
     print(f"Processing {blog_name}")
     article_files = load_articles(blog_name)
     summaries = extract_summaries_from_articles(article_files, blog_name, args)
-    save_summaries(summaries, blog_name)
     print(f"Done processing {blog_name}")
 
 

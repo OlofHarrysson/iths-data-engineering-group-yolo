@@ -32,7 +32,6 @@ app.layout = dbc.Container(
                 ],
             )
         ),
-        # dbc.Card(dbc.CardBody(html.H1("Articles")), class_name="mt-3"),
         dbc.Row(
             [dbc.Col([html.H5("Search Title:"), dbc.Input(id="input", value="", type="text")])]
         ),
