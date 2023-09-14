@@ -20,11 +20,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 
-def summarize_text(blog_text, non_technical=False):
+def summarize_text(blog_text, non_technical=False, swedish=False):
     # Define a function to summarize text using Openai's API
 
     if non_technical:
         prompt = f"Summarize the following text concisely with no technical words so that it can be understood by a child: {blog_text}"
+
+    elif swedish == True:
+        prompt = f"Summarize the following text concisely in swedish: {blog_text}"
 
     else:
         prompt = f"Summarize the following text concisely : {blog_text}"
@@ -42,6 +45,20 @@ def summarize_text(blog_text, non_technical=False):
     return summary
 
 
+def translate_title(title):
+    title_prompt = f"Translate this title to swedish: {title}"
+
+    response_trans = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": title_prompt},
+        ],
+    )
+
+    sv_title = response_trans.choices[0].message["content"].strip()
+    return sv_title
+
+
 def load_articles(blog_name):
     # path of the article with their specified blog name
     articles_path = Path("data/data_warehouse") / blog_name / "articles"
@@ -55,6 +72,7 @@ def load_articles(blog_name):
 
 def extract_summaries_from_articles(article_files, blog_name, args):
     summaries = []
+    swe_title = []
     if args.model_type == "local":
         print("Using local model")
         local = TextSummarizer()
@@ -71,16 +89,23 @@ def extract_summaries_from_articles(article_files, blog_name, args):
                 article_data = json.load(f)
 
             blog_text = article_data["blog_text"]
+            article_title = article_data["title"]
 
             if args.model_type == "local":
-                summary = local.summerize_text_local(blog_text, non_technical=False)
-                simple_summary = local.summerize_text_local(blog_text, non_technical=True)
+                summary = local.summerize_text_local(blog_text, non_technical=False, swedish=False)
+                simple_summary = local.summerize_text_local(
+                    blog_text, non_technical=True, swedish=False
+                )
+                swedish_summary = local.summerize_text_local(
+                    blog_text, non_technical=False, swedish=True
+                )
 
             if args.model_type == "gpt":
-                summary = summarize_text(blog_text, non_technical=False)
-                simple_summary = summarize_text(blog_text, non_technical=True)
+                summary = summarize_text(blog_text, non_technical=False, swedish=False)
+                simple_summary = summarize_text(blog_text, non_technical=True, swedish=False)
+                swedish_summary = summarize_text(blog_text, non_technical=False, swedish=True)
+                title_translator = translate_title(article_title)
 
-            article_title = article_data["title"]
             unique_id = article_data["unique_id"]
             link = article_data["link"]
             published = article_data["published"]
@@ -90,6 +115,8 @@ def extract_summaries_from_articles(article_files, blog_name, args):
                 title=article_title,
                 text=summary,
                 simple=simple_summary,
+                swedish=swedish_summary,
+                swe_title=title_translator,
                 link=link,
                 published=published,
             )
