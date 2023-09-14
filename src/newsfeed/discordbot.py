@@ -1,15 +1,10 @@
 import argparse
-import os
-import threading
 from pathlib import Path
 
 import discord
 from discord import SyncWebhook
 
 from newsfeed.utils import load_files
-
-# from utils import load_files
-
 
 WEBHOOK_URL_text = "https://discordapp.com/api/webhooks/1150692823516065792/y2sPB3SRB9aLI1iqYI2egHqSP7anjII9c73lQOA-bRsHVjhn9KHf3SLryGqOaT8ourhc"
 WEBHOOK_URL_simple = "https://discordapp.com/api/webhooks/1150693022028288054/-PdMDu3IKsfKQnXE3-GpZD1bi3gVPZjcImyNXRbh54AeAfKVd7uuOLdVioC60qygS4hc"
@@ -34,6 +29,7 @@ def send_to_discord(embed, WEBHOOK_URL):
 
 
 def send_summaries(blog_name, latest):
+    print(f"Sending article {latest['title']}")
     embed_text_en = create_embed(
         blog_name, latest["title"], latest["text"], latest["link"], latest["date"]
     )
@@ -45,10 +41,11 @@ def send_summaries(blog_name, latest):
     embed_swe = create_embed(
         blog_name, latest["swe_title"], latest["swedish"], latest["link"], latest["date"]
     )
+    send_to_discord(embed_text_en, WEBHOOK_URL_text)
+    send_to_discord(embed_simple_en, WEBHOOK_URL_simple)
+    send_to_discord(embed_swe, WEBHOOK_URL_swe)
 
-    threading.Thread(target=send_to_discord, args=(embed_text_en, WEBHOOK_URL_text)).start()
-    threading.Thread(target=send_to_discord, args=(embed_simple_en, WEBHOOK_URL_simple)).start()
-    threading.Thread(target=send_to_discord, args=(embed_swe, WEBHOOK_URL_swe)).start()
+    print(f"Done sending article {latest['title']}")
 
 
 def main(blog_name):
