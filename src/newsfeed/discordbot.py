@@ -58,7 +58,7 @@ def main(blog_name):
 
     latest = articles[0]
 
-    sum = send_summaries(blog_name, latest)
+    send_summaries(blog_name, latest)
 
 
 def parse_args():
