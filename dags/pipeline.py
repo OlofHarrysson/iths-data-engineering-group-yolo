@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from airflow.decorators import dag, task
-from airflow.operators.bash import BashOperator
 
 from newsfeed import discordbot, download_blogs_from_rss, extract_articles, summarize
 
@@ -20,18 +19,13 @@ def extract_articles_task():
 
 @task(task_id="summarize_task")
 def summarize_task():
-    BashOperator(
-        task_id="summarize_task",
-        bash_command="python3 src/newsfeed/summarize.py --blog_name mit --model_type gpt",
-    )
+    summarize.main(blog_name="mit", model_type="gpt")
+    summarize.main(blog_name="big_data", model_type="gpt")
 
 
 @task(task_id="discord_task")
 def discord_task():
-    BashOperator(
-        task_id="discord_task",
-        bash_command="python src/newsfeed/discordbot.py --blog_name mit",
-    )
+    discordbot.main(blog_name="mit")
 
 
 @dag(
